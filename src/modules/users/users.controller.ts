@@ -25,11 +25,6 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Post('/login')
-  login(@Body() loginData: Pick<User, 'email' | 'password'>) {
-    return this.usersService.login(loginData);
-  }
-
   @Post('/signup')
   signup(@Body() signupData: User) {
     return this.usersService.signup(signupData);
