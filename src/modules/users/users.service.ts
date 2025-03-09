@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { User } from './user.model';
 import { ReturnModelType } from '@typegoose/typegoose';
@@ -10,25 +14,43 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: User) {
-    const createdCat = new this.userModel({ name: 'alwin' });
-
-    return createdCat.save();
+    const createdUser = new this.userModel(createUserDto);
+    return createdUser.save();
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return this.userModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    return this.userModel.findById(id).exec();
   }
 
-  update(id: number, updateUserDto: User) {
-    updateUserDto;
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: Partial<User>) {
+    return this.userModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return this.userModel.findByIdAndDelete(id).exec();
+  }
+
+  async login({ email, password }: Pick<User, 'email' | 'password'>) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new NotFoundException(
+        "User with this email doesn't exist, try signing up",
+      );
+    }
+    if (user.password !== password) {
+      throw new BadRequestException('email or password is wrong');
+    }
+    return { user };
+  }
+
+  async signup(signupData: User) {
+    const createdUser = await this.create(signupData);
+    return { user: createdUser };
   }
 }
