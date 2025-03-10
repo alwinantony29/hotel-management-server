@@ -52,9 +52,4 @@ export class UsersService {
     }
     return { user };
   }
-
-  async signup(signupData: User) {
-    const createdUser = await this.create(signupData);
-    return { user: createdUser };
-  }
 }

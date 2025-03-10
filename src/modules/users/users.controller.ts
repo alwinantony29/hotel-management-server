@@ -25,11 +25,6 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Post('/signup')
-  signup(@Body() signupData: User) {
-    return this.usersService.signup(signupData);
-  }
-
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
