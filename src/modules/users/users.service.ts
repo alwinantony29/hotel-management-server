@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { User } from './user.model';
 import { ReturnModelType } from '@typegoose/typegoose';
@@ -46,18 +42,5 @@ export class UsersService {
 
   async remove(id: string) {
     return this.userModel.findByIdAndDelete(id).exec();
-  }
-
-  async login({ email, password }: Pick<User, 'email' | 'password'>) {
-    const user = await this.userModel.findOne({ email });
-    if (!user) {
-      throw new NotFoundException(
-        "User with this email doesn't exist, try signing up",
-      );
-    }
-    if (user.password !== password) {
-      throw new BadRequestException('email or password is wrong');
-    }
-    return { user };
   }
 }
