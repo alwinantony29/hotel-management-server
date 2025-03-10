@@ -1,5 +1,4 @@
 import { prop } from '@typegoose/typegoose';
-import bcrypt from 'bcrypt';
 
 export class User {
   @prop()
@@ -8,12 +7,7 @@ export class User {
   @prop({ unique: true })
   email: string;
 
-  @prop({
-    set: (password: string) => {
-      const salt = bcrypt.genSaltSync(10);
-      return bcrypt.hashSync(password, salt);
-    },
-  })
+  @prop({})
   password: string;
 
   @prop()
