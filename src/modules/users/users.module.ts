@@ -8,5 +8,6 @@ import { User } from './user.model';
   imports: [TypegooseModule.forFeature([User])],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
