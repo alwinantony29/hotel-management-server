@@ -2,7 +2,7 @@ import { prop } from '@typegoose/typegoose';
 
 export class Room {
   @prop()
-  name: string;
+  roomNo: string;
 
   @prop({ enum: ['deluxe', 'premium', 'ultra luxury'] })
   type: string;
@@ -10,9 +10,15 @@ export class Room {
   @prop()
   capacity: number;
 
-  @prop({ enum: ['available', 'cleaning'] })
+  @prop({ enum: ['available', 'cleaning', 'booked'] })
   status: string;
 
   @prop()
   images: string[];
+
+  @prop()
+  description: string[];
+
+  @prop()
+  price: number;
 }
