@@ -5,6 +5,7 @@ import { UsersModule } from './modules/users/users.module';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
+import { CabbookingsModule } from './modules/cabbookings/cabbookings.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     TypegooseModule.forRoot(process.env.MONGODB_URI),
     UsersModule,
+    CabbookingsModule,
     AuthModule,
   ],
   controllers: [AppController],
