@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { User } from './user.model';
 import { ReturnModelType } from '@typegoose/typegoose';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -10,25 +11,36 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: User) {
-    const createdCat = new this.userModel({ name: 'alwin' });
+    const salt = bcrypt.genSaltSync(10);
+    const encrypted = bcrypt.hashSync(createUserDto.password, salt);
 
-    return createdCat.save();
+    const createdUser = new this.userModel({
+      ...createUserDto,
+      password: encrypted,
+    });
+
+    return createdUser.save();
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return this.userModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    return this.userModel.findById(id).exec();
   }
 
-  update(id: number, updateUserDto: User) {
-    updateUserDto;
-    return `This action updates a #${id} user`;
+  async findOneByEmail(email: string) {
+    return this.userModel.findOne({ email }).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(id: string, updateUserDto: Partial<User>) {
+    return this.userModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec();
+  }
+
+  async remove(id: string) {
+    return this.userModel.findByIdAndDelete(id).exec();
   }
 }
