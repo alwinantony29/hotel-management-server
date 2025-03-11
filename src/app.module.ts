@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { CabbookingsModule } from './modules/cabbookings/cabbookings.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
+import { RoombookingsModule } from './modules/roombookings/roombookings.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RoomsModule } from './modules/rooms/rooms.module';
     TypegooseModule.forRoot(process.env.MONGODB_URI),
     UsersModule,
     RoomsModule,
+    RoombookingsModule,
     CabbookingsModule,
     AuthModule,
   ],
