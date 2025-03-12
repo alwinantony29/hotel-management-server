@@ -1,4 +1,12 @@
-import { Controller, Post, UseGuards, Get, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UseGuards,
+  Get,
+  Body,
+  BadRequestException,
+  Request,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { User } from '../users/user.model';
@@ -20,6 +28,12 @@ export class AuthController {
 
   @Post('/signup')
   async signup(@Body() signupData: User) {
+    const existingUser = await this.userService.findOneByEmail(
+      signupData.email,
+    );
+    if (existingUser) {
+      throw new BadRequestException('Email is already registered Try login');
+    }
     const createdUser = await this.userService.create(signupData);
     return {
       user: createdUser,
@@ -29,8 +43,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile() {
-    // TODO
-    console.log('profile');
+  getProfile(@Request() req) {
+    return this.userService.findOne(req.user.userId);
   }
 }
