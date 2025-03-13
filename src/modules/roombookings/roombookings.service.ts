@@ -2,17 +2,21 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { RoomBooking } from './roombookings.model';
+import { EmailService } from 'src/shared/email.service';
 
 @Injectable()
 export class RoombookingsService {
   constructor(
     @InjectModel(RoomBooking)
     private readonly roomBookingModel: ReturnModelType<typeof RoomBooking>,
+    private readonly emailService: EmailService,
   ) {}
 
   async create(booking: Partial<RoomBooking>): Promise<RoomBooking> {
     const createdBooking = new this.roomBookingModel(booking);
-    return createdBooking.save();
+    await createdBooking.save();
+    await this.emailService.sentRoomBookedEmail();
+    return createdBooking;
   }
 
   async findAll(): Promise<RoomBooking[]> {
