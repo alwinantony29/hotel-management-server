@@ -7,17 +7,24 @@ import {
   Param,
   HttpCode,
   Patch,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { RoombookingsService } from './roombookings.service';
 import { RoomBooking } from './roombookings.model';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('roombookings')
 export class RoombookingsController {
   constructor(private readonly roombookingsService: RoombookingsService) {}
 
   @Post()
-  create(@Body() booking: Partial<RoomBooking>): Promise<RoomBooking> {
-    return this.roombookingsService.create(booking);
+  @UseGuards(JwtAuthGuard)
+  create(
+    @Req() req,
+    @Body() booking: Omit<RoomBooking, 'userId'>,
+  ): Promise<RoomBooking> {
+    return this.roombookingsService.create(req.user.userId, booking);
   }
 
   @Get()

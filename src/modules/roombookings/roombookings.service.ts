@@ -12,15 +12,21 @@ export class RoombookingsService {
     private readonly emailService: EmailService,
   ) {}
 
-  async create(booking: Partial<RoomBooking>): Promise<RoomBooking> {
-    const createdBooking = new this.roomBookingModel(booking);
+  async create(
+    userId: string,
+    booking: Omit<RoomBooking, 'userId'>,
+  ): Promise<RoomBooking> {
+    const createdBooking = new this.roomBookingModel({ userId, ...booking });
+    await createdBooking.populate('roomId');
+    await createdBooking.populate('userId');
     await createdBooking.save();
-    await this.emailService.sentRoomBookedEmail();
+
+    await this.emailService.sentRoomBookedEmail(createdBooking);
     return createdBooking;
   }
 
   async findAll(): Promise<RoomBooking[]> {
-    return this.roomBookingModel.find().exec();
+    return this.roomBookingModel.find().populate('roomId').exec();
   }
 
   async findOne(id: string): Promise<RoomBooking> {
