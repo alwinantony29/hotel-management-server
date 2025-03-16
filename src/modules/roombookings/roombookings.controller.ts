@@ -14,12 +14,12 @@ import { RoombookingsService } from './roombookings.service';
 import { RoomBooking } from './roombookings.model';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('roombookings')
 export class RoombookingsController {
   constructor(private readonly roombookingsService: RoombookingsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   create(
     @Req() req,
     @Body() booking: Omit<RoomBooking, 'userId'>,
@@ -28,8 +28,9 @@ export class RoombookingsController {
   }
 
   @Get()
-  findAll(): Promise<RoomBooking[]> {
-    return this.roombookingsService.findAll();
+  findAll(@Req() req): Promise<RoomBooking[]> {
+    const userId = req.user.userId;
+    return this.roombookingsService.findAll({ userId });
   }
 
   @Get(':id')

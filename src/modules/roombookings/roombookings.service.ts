@@ -25,8 +25,8 @@ export class RoombookingsService {
     return createdBooking;
   }
 
-  async findAll(): Promise<RoomBooking[]> {
-    return this.roomBookingModel.find().populate('roomId').exec();
+  async findAll({ userId }: { userId?: string }): Promise<RoomBooking[]> {
+    return this.roomBookingModel.find({ userId }).populate('roomId').exec();
   }
 
   async findOne(id: string): Promise<RoomBooking> {
