@@ -1,6 +1,7 @@
 import { prop } from '@typegoose/typegoose';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
-export class Room {
+export class Room extends TimeStamps {
   @prop()
   roomNo: string;
 

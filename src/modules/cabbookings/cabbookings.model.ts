@@ -1,7 +1,8 @@
 import { prop, Ref } from '@typegoose/typegoose';
 import { User } from '../users/user.model';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
-export class CabBooking {
+export class CabBooking extends TimeStamps {
   @prop({ ref: () => User, type: () => String })
   userId: Ref<User>;
 

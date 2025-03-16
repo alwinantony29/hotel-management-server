@@ -8,11 +8,11 @@ import {
   IsNotEmpty,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-
 import { User } from '../users/user.model';
 import { Room } from '../rooms/rooms.model';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
-export class RoomBooking {
+export class RoomBooking extends TimeStamps {
   @prop({ ref: () => User, type: () => String })
   userId: Ref<User>;
 
@@ -27,6 +27,12 @@ export class RoomBooking {
 
   @prop({ default: false })
   isPaid: boolean;
+
+  @prop()
+  totalPrice: number;
+
+  @prop()
+  paymentMethod: string;
 
   @prop({ enum: ['confirmed', 'cancelled'] })
   @IsEnum(['confirmed', 'cancelled'], {
