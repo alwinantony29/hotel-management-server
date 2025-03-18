@@ -1,6 +1,12 @@
 import { prop } from '@typegoose/typegoose';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
+export enum Role {
+  CUSTOMER = 'customer',
+  ADMIN = 'admin',
+  DRIVER = 'driver',
+}
+
 export class User extends TimeStamps {
   @prop()
   name: string;
@@ -8,9 +14,12 @@ export class User extends TimeStamps {
   @prop({ unique: true })
   email: string;
 
-  @prop({})
+  @prop()
   password: string;
 
   @prop()
   phoneNo: string;
+
+  @prop({ enum: Role, default: Role.CUSTOMER })
+  role: Role;
 }
