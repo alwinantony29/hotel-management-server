@@ -5,7 +5,7 @@ export class Room extends TimeStamps {
   @prop()
   roomNo: string;
 
-  @prop({ enum: ['deluxe', 'premium', 'ultra luxury'] })
+  @prop({ enum: ['deluxe', 'premium', 'presidential', 'ultra luxury'] })
   type: string;
 
   @prop()

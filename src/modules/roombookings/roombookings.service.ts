@@ -29,15 +29,19 @@ export class RoombookingsService {
     });
 
     await createdBooking.populate('roomId');
-    await createdBooking.populate('userId');
     await createdBooking.save();
 
     await this.emailService.sentRoomBookedEmail(createdBooking);
     return createdBooking;
   }
 
-  async findAll({ userId }: { userId?: string }): Promise<RoomBooking[]> {
-    return this.roomBookingModel.find({ userId }).populate('roomId').exec();
+  async findAll(args?: { userId?: string }): Promise<RoomBooking[]> {
+    const { userId } = args || {};
+    return this.roomBookingModel
+      .find({ userId })
+      .populate('cabId')
+      .populate('roomId')
+      .exec();
   }
 
   async findOne(id: string): Promise<RoomBooking> {

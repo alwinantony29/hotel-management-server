@@ -54,4 +54,7 @@ export class RoomBooking extends TimeStamps {
 
   @prop()
   requests: string;
+
+  @prop({ ref: () => Room, type: () => String })
+  cabId: Ref<User>;
 }

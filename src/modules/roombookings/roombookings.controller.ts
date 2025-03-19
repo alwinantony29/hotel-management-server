@@ -28,7 +28,12 @@ export class RoombookingsController {
   }
 
   @Get()
-  findAll(@Req() req): Promise<RoomBooking[]> {
+  findAll(): Promise<RoomBooking[]> {
+    return this.roombookingsService.findAll();
+  }
+
+  @Get('mine')
+  findMyBookings(@Req() req): Promise<RoomBooking[]> {
     const userId = req.user.userId;
     return this.roombookingsService.findAll({ userId });
   }
