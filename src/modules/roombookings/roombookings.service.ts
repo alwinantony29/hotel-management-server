@@ -3,6 +3,8 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { RoomBooking } from './roombookings.model';
 import { EmailService } from 'src/shared/email.service';
+import { differenceInDays } from 'date-fns';
+import { RoomsService } from '../rooms/rooms.service';
 
 @Injectable()
 export class RoombookingsService {
@@ -10,13 +12,22 @@ export class RoombookingsService {
     @InjectModel(RoomBooking)
     private readonly roomBookingModel: ReturnModelType<typeof RoomBooking>,
     private readonly emailService: EmailService,
+    private readonly roomService: RoomsService,
   ) {}
 
   async create(
     userId: string,
     booking: Omit<RoomBooking, 'userId'>,
   ): Promise<RoomBooking> {
-    const createdBooking = new this.roomBookingModel({ userId, ...booking });
+    const diff = differenceInDays(booking.to, booking.from);
+    const room = await this.roomService.findOne(booking.roomId as any);
+
+    const createdBooking = new this.roomBookingModel({
+      userId,
+      ...booking,
+      totalPrice: diff * room.price,
+    });
+
     await createdBooking.populate('roomId');
     await createdBooking.populate('userId');
     await createdBooking.save();
