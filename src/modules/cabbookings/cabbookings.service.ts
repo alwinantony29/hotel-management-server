@@ -16,7 +16,7 @@ export class CabbookingsService {
   }
 
   async findAll(): Promise<CabBooking[]> {
-    return this.cabBookingModel.find().populate('roomId').exec();
+    return this.cabBookingModel.find().populate('userId').exec();
   }
 
   async findOne(id: string): Promise<CabBooking> {

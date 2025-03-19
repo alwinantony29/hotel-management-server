@@ -15,7 +15,7 @@ export class CabBooking extends TimeStamps {
   @prop()
   date: Date;
 
-  @prop({ enum: ['pending', 'accepted'] })
+  @prop({ enum: ['pending', 'accepted', 'fulfilled'], default: 'pending' })
   status: string;
 
   @prop()
