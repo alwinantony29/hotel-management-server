@@ -51,4 +51,7 @@ export class RoomBooking extends TimeStamps {
   @IsDate({ message: 'Invalid to date' })
   @Type(() => Date)
   to: Date;
+
+  @prop()
+  requests: string;
 }

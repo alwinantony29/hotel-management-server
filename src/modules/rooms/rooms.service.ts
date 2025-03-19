@@ -15,8 +15,8 @@ export class RoomsService {
     return newRoom.save();
   }
 
-  async findAll(): Promise<Room[]> {
-    return this.roomModel.find().exec();
+  async findAll(args?: Pick<Room, 'status'>): Promise<Room[]> {
+    return this.roomModel.find({ status: args.status }).exec();
   }
 
   async findOne(id: string): Promise<Room> {

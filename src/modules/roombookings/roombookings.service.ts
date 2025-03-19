@@ -25,7 +25,7 @@ export class RoombookingsService {
     const createdBooking = new this.roomBookingModel({
       userId,
       ...booking,
-      totalPrice: diff * room.price,
+      totalPrice: room.price * (diff || 1),
     });
 
     await createdBooking.populate('roomId');

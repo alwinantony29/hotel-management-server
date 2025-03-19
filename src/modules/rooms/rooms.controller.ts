@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { Room } from './rooms.model';
@@ -20,8 +21,9 @@ export class RoomsController {
   }
 
   @Get()
-  findAll() {
-    return this.roomsService.findAll();
+  findAll(@Query() query) {
+    const status = query.status;
+    return this.roomsService.findAll({ status });
   }
 
   @Get(':id')
