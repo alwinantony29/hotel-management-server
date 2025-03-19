@@ -11,6 +11,7 @@ import { Type } from 'class-transformer';
 import { User } from '../users/user.model';
 import { Room } from '../rooms/rooms.model';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
+import { CabBooking } from '../cabbookings/cabbookings.model';
 
 export class RoomBooking extends TimeStamps {
   @prop({ ref: () => User, type: () => String })
@@ -55,6 +56,6 @@ export class RoomBooking extends TimeStamps {
   @prop()
   requests: string;
 
-  @prop({ ref: () => Room, type: () => String })
+  @prop({ ref: () => CabBooking, type: () => String })
   cabId: Ref<User>;
 }
