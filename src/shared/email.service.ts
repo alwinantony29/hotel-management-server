@@ -31,8 +31,11 @@ export class EmailService {
     
     Best regards,
     ${HOTEL_NAME}
-    [Hotel Contact Information]
-    [Hotel Address]`;
+    Luxury & Comfort Redefined
+    123 Ocean Drive, Miami, FL
+    Email: contact@grandazure.com
+    Phone: +1 (123) 456-7890
+`;
 
     console.log('🚀 sending  mail...');
 
