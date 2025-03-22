@@ -36,10 +36,14 @@ export class UsersService {
 
   async changePassword(
     userId: string,
-    { newPassword, oldPassword }: { oldPassword: string; newPassword: string },
+    {
+      newPassword,
+      currentPassword,
+    }: { currentPassword: string; newPassword: string },
   ) {
     const user = await this.userModel.findById(userId).exec();
-    const oldPasswordMatched = bcryptjs.compare(oldPassword, user.password);
+
+    const oldPasswordMatched = bcryptjs.compare(currentPassword, user.password);
     if (!oldPasswordMatched) {
       throw new BadRequestException('Password does not match');
     }
