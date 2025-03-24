@@ -36,11 +36,13 @@ export class RoombookingsService {
   }
 
   async findAll(args?: { userId?: string }): Promise<RoomBooking[]> {
-    const { userId } = args || {};
+    const filter = args?.userId ? { userId: args.userId } : {};
+
     return this.roomBookingModel
-      .find({ userId })
+      .find(filter)
       .populate('cabId')
       .populate('roomId')
+      .populate('userId')
       .exec();
   }
 
