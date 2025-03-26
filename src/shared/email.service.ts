@@ -41,7 +41,7 @@ export class EmailService {
 
     await this.mailService.sendMail({
       from: `${HOTEL_NAME} <${process.env.EMAIL_USERNAME}>`,
-      to: 'alwin@helloastral.com',
+      to: user.email,
       subject: `Your Hotel Room Booking Confirmation – ${HOTEL_NAME}`,
       text: message,
     });
