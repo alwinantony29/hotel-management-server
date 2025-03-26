@@ -31,7 +31,9 @@ export class RoombookingsService {
     await createdBooking.populate('roomId');
     await createdBooking.save();
 
-    await this.emailService.sentRoomBookedEmail(createdBooking);
+    await this.emailService.sentRoomBookedEmail(
+      await createdBooking.populate('userId'),
+    );
     return createdBooking;
   }
 
