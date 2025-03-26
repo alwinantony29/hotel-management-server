@@ -47,4 +47,31 @@ export class EmailService {
     });
     console.log('mail sent ✅');
   }
+
+  async sentDriverOnboardingMail(driver: User & { rawPassword: string }) {
+    const message = `Dear ${driver.name},
+    
+    Congratulations! You have been successfully onboarded as a driver at ${HOTEL_NAME}. To get started, please follow these steps:
+    
+     Log in to your account using 
+     email: ${driver.email}  
+     password: ${driver.rawPassword}
+    
+    
+    Best regards,
+    ${HOTEL_NAME}
+    Luxury & Comfort Redefined
+    123 Ocean Drive, Miami, FL
+    Email: contact@grandazure.com
+    Phone: +1 (123) 456-7890`;
+    console.log('🚀 sending onboarding mail...');
+
+    await this.mailService.sendMail({
+      from: `${HOTEL_NAME} <${process.env.EMAIL_USERNAME}>`,
+      to: driver.email,
+      subject: `Welcome aboard – ${HOTEL_NAME}`,
+      text: message,
+    });
+    console.log('mail sent ✅');
+  }
 }

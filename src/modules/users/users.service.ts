@@ -3,12 +3,14 @@ import { InjectModel } from 'nestjs-typegoose';
 import { User } from './user.model';
 import { ReturnModelType } from '@typegoose/typegoose';
 import * as bcryptjs from 'bcryptjs';
+import { EmailService } from 'src/shared/email.service';
 
 const salt = bcryptjs.genSaltSync(10);
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>,
+    private readonly emailService: EmailService,
   ) {}
 
   async create(createUserDto: User) {
@@ -19,7 +21,12 @@ export class UsersService {
       password: encrypted,
     });
 
-    return createdUser.save();
+    await createdUser.save();
+    await this.emailService.sentDriverOnboardingMail({
+      ...createdUser,
+      rawPassword: createUserDto.password,
+    });
+    return createdUser;
   }
 
   async findAll(filters = {}) {
