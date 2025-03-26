@@ -20,13 +20,13 @@ export class EmailService {
     Booking Details:
     Room Type: ${room.type}
     Room Number: ${room.roomNo}
-    Check-in Date: ${bookingDetails.from}
-    Check-out Date: ${bookingDetails.to}
+    Check-in Date: ${new Date(bookingDetails.from).toLocaleDateString()}
+    Check-out Date: ${new Date(bookingDetails.to).toLocaleDateString()}
     Total Guests: ${bookingDetails.totalPeople}
-    Payment Status: ${bookingDetails.isPaid ? 'Paid' : 'Unpaid'}
     Booking Status: ${bookingDetails.status}
     Capacity: ${room.capacity} persons
-    Price per night: $ ${room.price}
+    Total: ₹${bookingDetails.totalPrice}
+
     If you have any special requests or need further assistance, feel free to reach out to us. We look forward to making your stay comfortable and enjoyable!
     
     Best regards,
@@ -37,7 +37,7 @@ export class EmailService {
     Phone: +1 (123) 456-7890
 `;
 
-    console.log('🚀 sending  mail...');
+    console.log('🚀 sending  mail...to:', user.email);
 
     await this.mailService.sendMail({
       from: `${HOTEL_NAME} <${process.env.EMAIL_USERNAME}>`,
@@ -63,7 +63,7 @@ export class EmailService {
     123 Ocean Drive, Miami, FL
     Email: contact@grandazure.com
     Phone: +1 (123) 456-7890`;
-    console.log('🚀 sending onboarding mail...');
+    console.log('🚀 sending onboarding mail... to:', driver.email);
 
     await this.mailService.sendMail({
       from: `${HOTEL_NAME} <${process.env.EMAIL_USERNAME}>`,

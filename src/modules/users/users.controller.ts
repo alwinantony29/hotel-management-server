@@ -14,14 +14,23 @@ import {
 import { UsersService } from './users.service';
 import { User } from './user.model';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { EmailService } from 'src/shared/email.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Post()
   async create(@Body() createUserDto: User) {
-    return this.usersService.create(createUserDto);
+    const createdUser = await this.usersService.create(createUserDto);
+    await this.emailService.sentDriverOnboardingMail({
+      ...createdUser.toObject(),
+      rawPassword: createUserDto.password,
+    });
+    return createdUser;
   }
 
   @Get()
