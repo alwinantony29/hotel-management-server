@@ -9,6 +9,7 @@ import {
   NotFoundException,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.model';
@@ -24,8 +25,8 @@ export class UsersController {
   }
 
   @Get()
-  async findAll() {
-    return this.usersService.findAll();
+  async findAll(@Query() query: Record<string, any>) {
+    return this.usersService.findAll(query);
   }
 
   @Get(':id')

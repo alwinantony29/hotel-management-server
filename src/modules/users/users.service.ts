@@ -22,8 +22,8 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async findAll() {
-    return this.userModel.find().exec();
+  async findAll(filters = {}) {
+    return this.userModel.find(filters).exec();
   }
 
   async findOne(id: string) {
