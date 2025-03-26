@@ -57,7 +57,6 @@ export class EmailService {
      email: ${driver.email}  
      password: ${driver.rawPassword}
     
-    
     Best regards,
     ${HOTEL_NAME}
     Luxury & Comfort Redefined

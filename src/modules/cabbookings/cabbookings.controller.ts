@@ -6,17 +6,21 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { CabbookingsService } from './cabbookings.service';
 import { CabBooking } from './cabbookings.model';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('cabbookings')
 export class CabbookingsController {
   constructor(private readonly cabbookingsService: CabbookingsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCabBookingDto: Partial<CabBooking>) {
-    return this.cabbookingsService.create(createCabBookingDto);
+  create(@Req() req, @Body() createCabBookingDto: Partial<CabBooking>) {
+    return this.cabbookingsService.create(req.user.userId, createCabBookingDto);
   }
 
   @Get()

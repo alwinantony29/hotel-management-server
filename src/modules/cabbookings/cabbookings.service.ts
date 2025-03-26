@@ -10,8 +10,14 @@ export class CabbookingsService {
     private readonly cabBookingModel: ReturnModelType<typeof CabBooking>,
   ) {}
 
-  async create(createCabBookingDto: Partial<CabBooking>): Promise<CabBooking> {
-    const createdBooking = new this.cabBookingModel(createCabBookingDto);
+  async create(
+    userId: string,
+    createCabBookingDto: Partial<CabBooking>,
+  ): Promise<CabBooking> {
+    const createdBooking = new this.cabBookingModel({
+      ...createCabBookingDto,
+      userId,
+    });
     return createdBooking.save();
   }
 
